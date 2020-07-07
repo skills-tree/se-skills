@@ -1,0 +1,68 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11-jdk-buster
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Retrieve gh-pages-deployment JAR
+          command: mvn -s .circleci/settings.xml org.apache.maven.plugins:maven-dependency-plugin:2.4:get -DrepositoryId=gh-pages-deployment -Dartifact=com.gihtub.skillstree:gh-pages-deployment:0.9.1:jar -Ddest=app.jar
+      - run:
+          name: Update Skills (dry run)
+          command: mkdir -p frontend/js && java -jar app.jar
+
+  deploy:
+    docker:
+      - image: circleci/openjdk:11-jdk-buster
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Clone Frontend
+          command: git clone https://github.com/skills-tree/frontend.git
+
+      - run:
+          name: Retrieve gh-pages-deployment JAR
+          command: mvn -s .circleci/settings.xml org.apache.maven.plugins:maven-dependency-plugin:2.4:get -DrepositoryId=gh-pages-deployment -Dartifact=com.gihtub.skillstree:gh-pages-deployment:0.9.1:jar -Ddest=app.jar
+      - run:
+          name: Update Skills
+          command: java -jar app.jar
+
+      - run:
+          name: Checkout gh-pages Branch
+          command: git checkout gh-pages
+
+      - run:
+          name: Copy Files
+          command: cp -rf frontend/* . && rm -rf frontend
+
+      - run:
+          name: Delete gh-pages-deployment JAR
+          command: rm -f app.jar
+
+      - run:
+          name: Git Config
+          command: git config --global user.email "pipeline@circleci.com" && git config --global user.name "cicd"
+
+      - run:
+          name: Commit & Push
+          command: git add * && git commit -m "Update skills" && git push
+
+workflows:
+  main:
+    jobs:
+      - build:
+          context: SonarCloud
+      - deploy:
+          requires:
+            - build
+          context: SonarCloud
+          filters:
+            branches:
+              only: master
