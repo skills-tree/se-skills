@@ -1,0 +1,45 @@
+#skills-tree {
+    border: solid 1px;
+    display: inline-block;
+    margin: 0;
+}
+
+#skills-menu {
+    border: solid 1px;
+    height: 100%;
+    width: 15%;
+    display: inline-block;
+    float:left;
+    margin: 0;
+}
+
+#skills-description {
+    border: solid 1px;
+    height: 100%;
+    width: 24%;
+    display: inline-block;
+    float: right;
+    margin: 0;
+}
+
+.Treant > .node {
+    padding: 3px;
+    border: 1px solid #484848;
+    border-radius: 50px;
+    height: 80px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Treant > .node img {
+    width: 64px;
+    height: 64px;
+}
+
+#upper-menu {
+    hight: 20px;
+    width: 100%;
+    text-align: right;
+}

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Skills Tree</title>
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="css/Treant.css" type="text/css"/>
+	<link rel="stylesheet" href="css/main.css">
+    <!-- libraries -->
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.8.1/auth0-spa-js.development.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+    <div id="upper-menu">
+        <button id="btn-login" onclick="login()">Log in</button>
+        <button id="btn-logout" onclick="logout()">Log out</button>
+    </div>
+
+    <div id="main-holder">
+        <div id="skills-menu">MENU</div>
+        <div id="skills-description">DESCRIPTION</div>
+	    <div id="skills-tree"></div>
+    </div>
+
+    <!-- javascript -->
+    <script src="vendor/raphael.js"></script>
+	<script src="vendor/jquery.min.js"></script>
+    <script src="js/Treant.js"></script>
+    <script src="js/skillstree.js"></script>
+	<script>
+        new Treant(skillsTreeJson);
+
+        /*$(document).ready(function() {
+
+        });*/
+	</script>
+</body>
+</html>
